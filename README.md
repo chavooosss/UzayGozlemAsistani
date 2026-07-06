@@ -1,5 +1,7 @@
 # Uzay Gözlem Asistanı 🛰🌙
 
+[![Son sürüm](https://img.shields.io/github/v/release/chavooosss/UzayGozlemAsistani?label=APK%20indir&color=b03a3a)](https://github.com/chavooosss/UzayGozlemAsistani/releases/latest)
+
 Gece gökyüzü gözlemi için yerel Android uygulaması (Kotlin + Jetpack Compose):
 konumunuza göre uydu geçişleri, gezegen ve parlak yıldız konumları, meteor
 yağmurları, Ay evresi, canlı takip radarı ve akıllı gece planı — hesapların
@@ -84,6 +86,12 @@ tamamı cihazda, offline motorlarla yapılır.
 - **Ay Durumu** — Güncel evre (8 evre), aydınlanma yüzdesi, sonraki Yeni Ay /
   Dolunay tahmini.
 - Gece kullanımına uygun koyu, kırmızı vurgulu tema.
+
+## Kurulum
+
+Hazır APK için [Releases](https://github.com/chavooosss/UzayGozlemAsistani/releases/latest)
+sayfasından son sürümü indirin ve telefonda dosyaya dokunarak kurun
+("bilinmeyen kaynaklardan yükleme" izni gerekebilir). Android 8.0+ gerekir.
 
 ## Derleme
 
