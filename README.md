@@ -1,7 +1,11 @@
 # Uzay Gözlem Asistanı 🛰🌙
 
-Gece gökyüzü gözlemi planlamak için yerel Android uygulaması: konumunuza göre
-uydu geçişleri (ISS, Hubble, Tiangong), yaklaşan meteor yağmurları ve Ay evresi.
+Gece gökyüzü gözlemi için yerel Android uygulaması (Kotlin + Jetpack Compose):
+konumunuza göre uydu geçişleri, gezegen ve parlak yıldız konumları, meteor
+yağmurları, Ay evresi, canlı takip radarı ve akıllı gece planı — hesapların
+tamamı cihazda, offline motorlarla yapılır.
+
+8 sekme: **Plan · Geçişler · Gökyüzü · Meteorlar · Ay · Harita · İzleme · Günlük**
 
 ## Özellikler
 
@@ -19,7 +23,7 @@ uydu geçişleri (ISS, Hubble, Tiangong), yaklaşan meteor yağmurları ve Ay ev
   altın ≤%70, kırmızı üstü. Tahmin alınamazsa çip gizlenir, uygulama
   etkilenmez.
 - **Gökyüzü** (sekme) — O an ufkun üstündeki gezegenler (Merkür–Satürn),
-  parlak yıldızlar (~18) ve Ay; yön/yükseklik/parlaklıkla listelenir ve
+  parlak yıldızlar (~70, 2.7 kadire kadar) ve Ay; yön/yükseklik/parlaklıkla listelenir ve
   polar gökyüzü haritasında gösterilir. Gezegen konumları Schlyter yörünge
   yöntemiyle hesaplanır (~1-2 açı dakikası). Gündüz uyarısı verir.
   Bir cisme dokununca **detay ekranı** açılır: anlık konum, doğuş/tepe/batış
@@ -75,7 +79,7 @@ uydu geçişleri (ISS, Hubble, Tiangong), yaklaşan meteor yağmurları ve Ay ev
 - **Geçiş Bildirimi** — Görünür geçişlerden 10 dk önce bildirim
   (AlarmManager exact alarm + BroadcastReceiver; her yenilemede yeniden
   planlanır, telefon yeniden başlarsa uygulamayı bir kez açmak yeterli).
-- **Meteor Takvimi** — 8 büyük yıllık yağmurdan en yakın 3'ü, kalan gün sayısı
+- **Meteor Takvimi** — 9 büyük yıllık yağmurdan en yakın 5'i, kalan gün sayısı
   ve zirve gecesindeki Ay aydınlanması (parlak Ay = kötü gözlem) ile.
 - **Ay Durumu** — Güncel evre (8 evre), aydınlanma yüzdesi, sonraki Yeni Ay /
   Dolunay tahmini.
@@ -84,7 +88,7 @@ uydu geçişleri (ISS, Hubble, Tiangong), yaklaşan meteor yağmurları ve Ay ev
 ## Derleme
 
 ```bash
-# Günlük kullanım için optimize sürüm (R8, debug anahtarıyla imzalı, ~1.6MB):
+# Günlük kullanım için optimize sürüm (R8, debug anahtarıyla imzalı, ~2.6MB):
 ./gradlew assembleRelease
 adb install -r app/build/outputs/apk/release/app-release.apk
 
@@ -102,22 +106,36 @@ içindeki `sdk.dir` ile ayarlanır.
 
 ```
 app/src/main/java/com/uzaygozlem/asistan/
-├── MainActivity.kt        # Compose UI girişi, sekmeler, izin akışı
-├── MainViewModel.kt       # Tek StateFlow<UiState>; veri akışını yönetir
-├── data/
-│   ├── Satellites.kt      # Takip edilen uydular (NORAD ID'leri)
-│   ├── TleRepository.kt   # CelesTrak'tan TLE çekme + 6 saatlik dosya önbelleği
-│   └── MeteorShowers.kt   # Statik yağmur takvimi + en yakın 3'ün hesabı
+├── MainActivity.kt         # Compose UI girişi, sekme/detay navigasyonu, izin akışı
+├── MainViewModel.kt        # Tek StateFlow<UiState>; paralel yenileme (TLE + hava)
 ├── astro/
-│   ├── PassCalculator.kt  # SGP4 geçiş hesabı + görünürlük analizi
-│   ├── SunCalc.kt         # Güneş yükseklik açısı (alacakaranlık kontrolü)
-│   └── MoonCalc.kt        # Ay evresi/aydınlanması (elongasyon yöntemi)
+│   ├── PassCalculator.kt   # SGP4 geçiş hesabı + görünürlük analizi
+│   ├── SkyBodies.kt        # Gezegenler (Schlyter), ~70 parlak yıldız, Ay konumu
+│   ├── SunCalc.kt          # Güneş yükseklik açısı (alacakaranlık kontrolü)
+│   └── MoonCalc.kt         # Ay evresi/aydınlanması (elongasyon yöntemi)
+├── data/
+│   ├── Satellites.kt       # Uydu kataloğu + NORAD ID ile özel uydu
+│   ├── TleRepository.kt    # CelesTrak'tan TLE çekme + 6 saatlik dosya önbelleği
+│   ├── WeatherRepository.kt # Open-Meteo bulutluluk (1 saatlik önbellek)
+│   ├── MeteorShowers.kt    # Statik yağmur takvimi (9 yağmur) + en yakın 5
+│   ├── Encyclopedia.kt     # Gömülü "Hakkında" metinleri (offline)
+│   ├── ObservationLog.kt   # Gözlem günlüğü (JSON dosya)
+│   └── Watchlist.kt        # İzleme listesi (JSON dosya)
 ├── location/
 │   └── LocationProvider.kt # FusedLocation; izin yoksa null → manuel giriş
-└── ui/                    # Compose ekranları (Geçişler, Meteorlar, Ay, özet)
+├── notify/
+│   └── PassNotifier.kt     # Geçiş/meteor alarmları + boot sonrası yeniden kurulum
+├── widget/
+│   └── NextPassWidget.kt   # Glance ana ekran widget'ı (bu geceki ilk geçiş)
+└── ui/                     # Compose ekranları: Plan, Geçişler (+detay, canlı takip),
+                            # Gökyüzü (+gökcismi detayı), Meteorlar (+detay), Ay,
+                            # Harita, İzleme, Günlük + pusula/harita bileşenleri
 
 app/src/main/java/com/github/amsacode/predict4java/
-└── SatPosEclipse.java     # Kütüphanenin protected eclipse alanına paket-içi erişim
+└── SatPosEclipse.java      # Kütüphanenin protected eclipse alanına paket-içi erişim
+
+app/src/main/java/org/apache/commons/logging/
+└── Log.java, LogFactory.java # commons-logging mini stub (R8 çökmesine çözüm)
 ```
 
 ## Nasıl çalışıyor?
@@ -141,6 +159,7 @@ Uygulama önce konum izni ister (FusedLocationProvider). İzin verilmez ya da
 konum alınamazsa enlem/boylamı elle girebilirsiniz; manuel konum kalıcı olarak
 saklanır.
 
-## Kapsam dışı (ilk sürümde yok)
+## Kapsam dışı
 
-Bildirim/alarm, çoklu dil, hesap sistemi, ışık kirliliği haritası.
+Çoklu dil, hesap sistemi, ışık kirliliği haritası. Tek kullanıcılık kişisel
+bir uygulamadır; Play Store hedefi yoktur.
