@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Basit uydu silueti: gövde + iki panel -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M9.5,9.5 L14.5,14.5 L12.8,16.2 L7.8,11.2 Z
+            M4,6 L8,10 L6,12 L2,8 Z
+            M16,18 L20,22 L18,24 L14,20 Z
+            M15,4 A5,5 0 0,1 20,9 L18.5,9 A3.5,3.5 0 0,0 15,5.5 Z
+            M15,1 A8,8 0 0,1 23,9 L21.5,9 A6.5,6.5 0 0,0 15,2.5 Z" />
+</vector>

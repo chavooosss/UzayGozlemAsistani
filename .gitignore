@@ -1,0 +1,16 @@
+# Gradle
+.gradle/
+build/
+app/build/
+
+# Yerel yapılandırma (makineye özel SDK yolu)
+local.properties
+
+# Kotlin/IDE
+.kotlin/
+.idea/
+*.iml
+
+# Diğer
+captures/
+.DS_Store

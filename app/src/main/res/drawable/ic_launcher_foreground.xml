@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Meteor kuyruğu: uçtan başa altın→kırmızı→şeffaf degrade kama -->
+    <path android:pathData="M 74.7,60.4 Q 52,41 25,25 Q 46,50 64.9,71.5 A 7,7 0 0,0 74.7,60.4 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="70" android:startY="66"
+                android:endX="25" android:endY="25"
+                android:type="linear">
+                <item android:offset="0" android:color="#FFFFD873" />
+                <item android:offset="0.45" android:color="#E6E5484D" />
+                <item android:offset="1" android:color="#00E5484D" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Meteor başı: dış parıltı + parlak çekirdek -->
+    <path
+        android:pathData="M 70,66 m -10,0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0"
+        android:fillColor="#33FFD873" />
+    <path android:pathData="M 70,66 m -6.2,0 a 6.2,6.2 0 1,0 12.4,0 a 6.2,6.2 0 1,0 -12.4,0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="66" android:startY="61"
+                android:endX="74" android:endY="71"
+                android:type="linear">
+                <item android:offset="0" android:color="#FFFFF6DE" />
+                <item android:offset="1" android:color="#FFFFC94D" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Yıldız parıltıları -->
+    <path
+        android:pathData="M 82,33 Q 82,36.2 78.8,36.2 Q 82,36.2 82,39.4 Q 82,36.2 85.2,36.2 Q 82,36.2 82,33 Z"
+        android:fillColor="#EFEAF7" />
+    <path
+        android:pathData="M 36,76 Q 36,78.4 33.6,78.4 Q 36,78.4 36,80.8 Q 36,78.4 38.4,78.4 Q 36,78.4 36,76 Z"
+        android:fillColor="#8F86AD" />
+    <path
+        android:pathData="M 30,52 Q 30,53.8 28.2,53.8 Q 30,53.8 30,55.6 Q 30,53.8 31.8,53.8 Q 30,53.8 30,52 Z"
+        android:fillColor="#66EFEAF7" />
+</vector>
