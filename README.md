@@ -1,6 +1,7 @@
 # Uzay Gözlem Asistanı 🛰🌙
 
 [![Son sürüm](https://img.shields.io/github/v/release/chavooosss/UzayGozlemAsistani?label=APK%20indir&color=b03a3a)](https://github.com/chavooosss/UzayGozlemAsistani/releases/latest)
+[![Android CI](https://github.com/chavooosss/UzayGozlemAsistani/actions/workflows/android.yml/badge.svg)](https://github.com/chavooosss/UzayGozlemAsistani/actions/workflows/android.yml)
 
 Gece gökyüzü gözlemi için yerel Android uygulaması (Kotlin + Jetpack Compose):
 konumunuza göre uydu geçişleri, gezegen ve parlak yıldız konumları, meteor
